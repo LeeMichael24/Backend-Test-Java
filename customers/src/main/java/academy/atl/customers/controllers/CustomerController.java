@@ -1,9 +1,7 @@
 package academy.atl.customers.controllers;
 
 import academy.atl.customers.entities.Customer;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.PrinterIOException;
 import java.util.ArrayList;
@@ -43,6 +41,9 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable Integer id) {
+        //lamba function
+        //cretae a lanba function to iterate the list
+        //if the id is equal to the id of the customer return the customer
         for (Customer customer : list) {
             if( customer.getId().equals(id)){
                 return customer;
@@ -57,16 +58,33 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/addCustomer")
-    public void addCustomer(Customer customer) {
+    @PostMapping("/addCustomer")
+    public void addCustomer(@RequestBody Customer customer) {
+        list.add(customer);
     }
 
     @GetMapping("/removeCustomer")
     public void removeCustomer() {
+        for(Customer customer : list){
+            if(customer.getId().equals(1)){
+                list.remove(customer);
+                break;
+            }
+        }
     }
 
-    @GetMapping("/updateCustomer")
-    public void updateCustomer() {
+    @PutMapping("/updateCustomer/{id}")
+    public void updateCustomer(@RequestBody Integer id ,
+                               @RequestBody Customer updateCustomer) {
+        for(Customer c : list){
+            if(c.getId().equals(id)){
+                list.remove(c);
+                updateCustomer.setId(id); //le seteamos el id en caso de que no lo tenga
+                list.add(updateCustomer);
+                break;
+            }
+        }
+
     }
 
     @GetMapping("/searchCustomer")
